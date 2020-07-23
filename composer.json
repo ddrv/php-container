@@ -1,0 +1,38 @@
+{
+  "name": "ddrv/container",
+  "type": "library",
+  "description": "Simple PSR-11 Container ",
+  "keywords": ["psr-11", "di", "dependency-injection", "dependency-container", "container"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ivan Dudarev",
+      "email": "ivan@ddrv.ru",
+      "homepage": "https://ddrv.ru"
+    }
+  ],
+  "require": {
+    "php": ">=5.4",
+    "psr/container": "^1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8.35 || ^5.7",
+    "squizlabs/php_codesniffer": "^3.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ddrv\\Container\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\Ddrv\\Container\\": "tests/"
+    }
+  },
+  "funding": [
+    {
+      "type": "other",
+      "url": "https://www.paypal.me/ddrv"
+    }
+  ]
+}
