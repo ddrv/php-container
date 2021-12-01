@@ -10,7 +10,7 @@ Simple PSR-11 Container
 # Install
 
 ```bash
-composer require ddrv/container:^1.0
+composer require ddrv/container:^2.0
 ```
 
 # Using

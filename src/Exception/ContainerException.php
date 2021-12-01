@@ -14,10 +14,10 @@ final class ContainerException extends InvalidArgumentException implements Conta
      * @param Exception $previous
      * @return ContainerException
      */
-    public static function factoryError($id, Exception $previous)
+    public static function factoryError(string $id, Exception $previous): self
     {
-        $message = 'Error of creating service ' . $id . ': ' . $previous->getMessage();
-        return new static($message, 1, $previous);
+        $message = sprintf('Error of creating service %s: %s', $id, $previous->getMessage());
+        return new self($message, 1, $previous);
     }
 
     /**
@@ -26,9 +26,9 @@ final class ContainerException extends InvalidArgumentException implements Conta
      * @param string $path
      * @return ContainerException
      */
-    public static function recursiveBinding($alias, $service, $path)
+    public static function recursiveBinding(string $alias, string $service, string $path): self
     {
-        $message = 'Can not bind ' . $alias . ' to ' . $service . '. Recursion detected: ' . $path;
-        return new static($message, 2);
+        $message = sprintf('Can not bind %s to %s. Recursion detected: %s', $alias, $service, $path);
+        return new self($message, 2);
     }
 }

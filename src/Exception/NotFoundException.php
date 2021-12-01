@@ -10,9 +10,9 @@ final class NotFoundException extends InvalidArgumentException implements NotFou
     /**
      * @param string $id
      */
-    public function __construct($id)
+    public function __construct(string $id)
     {
-        $message = 'Service ' . (string)$id . ' not found in container.';
+        $message = sprintf('Service %s not found in container.', $id);
         parent::__construct($message, 1);
     }
 }

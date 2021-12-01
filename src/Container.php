@@ -6,44 +6,39 @@ use Closure;
 use Ddrv\Container\Exception\ContainerException;
 use Ddrv\Container\Exception\NotFoundException;
 use Exception;
-use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 final class Container implements ContainerInterface
 {
     /**
      * @var Closure[]
      */
-    private $factories = [];
+    private array $factories = [];
 
     /**
      * @var array
      */
-    private $services = [];
+    private array $services = [];
 
     /**
      * @var string[]
      */
-    private $map = [];
+    private array $map = [];
 
     /**
      * @var bool[]
      */
-    private $instances = [];
+    private array $instances = [];
 
     /**
      * @var ContainerInterface[]
      */
-    private $containers = [];
+    private array $containers = [];
 
     /**
-     * @param string $id
-     * @return mixed
-     * @throws NotFoundExceptionInterface
-     * @throws ContainerExceptionInterface
+     * @inheritDoc
      */
-    public function get($id)
+    public function get(string $id)
     {
         if (!$this->has($id)) {
             throw new NotFoundException($id);
@@ -76,10 +71,9 @@ final class Container implements ContainerInterface
     }
 
     /**
-     * @param string $id
-     * @return bool
+     * @inheritDoc
      */
-    public function has($id)
+    public function has(string $id): bool
     {
         if (array_key_exists($id, $this->map)) {
             return $this->has($this->map[$id]);
@@ -103,7 +97,7 @@ final class Container implements ContainerInterface
      * @param mixed $value
      * @return void
      */
-    public function value($id, $value)
+    public function value(string $id, $value)
     {
         $this->services[$id] = $value;
         if (array_key_exists($id, $this->factories)) {
@@ -119,10 +113,10 @@ final class Container implements ContainerInterface
 
     /**
      * @param string $id
-     * @param Closure $factory
+     * @param callable $factory
      * @return void
      */
-    public function service($id, Closure $factory)
+    public function service(string $id, callable $factory)
     {
         $this->factories[$id] = $factory;
         if (array_key_exists($id, $this->services)) {
@@ -138,10 +132,10 @@ final class Container implements ContainerInterface
 
     /**
      * @param string $id
-     * @param Closure $factory
+     * @param callable $factory
      * @return void
      */
-    public function instance($id, Closure $factory)
+    public function instance(string $id, callable $factory)
     {
         $this->factories[$id] = $factory;
         if (array_key_exists($id, $this->services)) {
@@ -158,10 +152,10 @@ final class Container implements ContainerInterface
      * @param string $service
      * @return void
      */
-    public function bind($alias, $service)
+    public function bind(string $alias, string $service)
     {
-        $alias = trim((string)$alias);
-        $service = trim((string)$service);
+        $alias = trim($alias);
+        $service = trim($service);
         $path = [$alias];
         $to = $service;
         do {
