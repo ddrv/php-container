@@ -1,14 +1,15 @@
 <?php
 
-namespace Tests\Ddrv\Container;
+namespace TestUnits\Ddrv\Container;
 
 use Ddrv\Container\Container;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use stdClass;
+use TestTools\Ddrv\Container\TestServiceProvider;
 
-class ContainerTest extends TestCase
+final class ContainerTest extends TestCase
 {
     /**
      * @return void
@@ -205,5 +206,27 @@ class ContainerTest extends TestCase
         $this->expectException(ContainerExceptionInterface::class);
         $this->expectExceptionMessage('Can not bind service to service. Recursion detected: service -> service');
         $container->bind('service', 'service');
+    }
+
+    /**
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testRegister(): void
+    {
+        $values = [
+            'k1' => 'v1',
+            'k2' => 'v3',
+            'k3' => 'v3',
+        ];
+        $container = new Container();
+        $serviceProvider = new TestServiceProvider($values);
+        $container->register($serviceProvider);
+
+        foreach ($values as $id => $value) {
+            $this->assertTrue($container->has($id));
+            $this->assertSame($value, $container->get($id));
+        }
     }
 }
