@@ -30,7 +30,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\Ddrv\\Container\\": "tests/"
+      "TestTools\\Ddrv\\Container\\": "tests/src",
+      "TestUnits\\Ddrv\\Container\\": "tests/unit"
     }
   },
   "funding": [

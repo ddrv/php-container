@@ -151,6 +151,15 @@ final class Container implements ContainerInterface
     }
 
     /**
+     * @param ServiceProviderInterface $serviceProvider
+     * @return void
+     */
+    public function register(ServiceProviderInterface $serviceProvider): void
+    {
+        $serviceProvider->register($this);
+    }
+
+    /**
      * @param ContainerInterface $container
      * @return void
      */
