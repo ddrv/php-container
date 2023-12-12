@@ -5,7 +5,7 @@
 
 # ddrv/container
 
-Simple PSR-11 Container 
+Simple PSR-11 Container
 
 # Install
 
@@ -64,7 +64,7 @@ $instance1->var; // 'value2'
 $instance2->var; // 'value1'
 
 /*
- * Aliasing 
+ * Aliasing
  */
 $container->service('some-service', function() {
     return new ArrayObject();
