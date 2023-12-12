@@ -4,11 +4,12 @@ namespace Tests\Ddrv\Container;
 
 use Ddrv\Container\Container;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use stdClass;
 
 class ContainerTest extends TestCase
 {
-
     public function testHas()
     {
         $container = new Container();
@@ -20,7 +21,7 @@ class ContainerTest extends TestCase
     public function testNotFound()
     {
         $container = new Container();
-        $this->expectException('Psr\Container\NotFoundExceptionInterface');
+        $this->expectException(NotFoundExceptionInterface::class);
         $this->assertSame('value', $container->get('key'));
     }
 
@@ -133,7 +134,7 @@ class ContainerTest extends TestCase
     public function testBindRecursive()
     {
         $container = new Container();
-        $this->expectException('Psr\Container\ContainerExceptionInterface');
+        $this->expectException(ContainerExceptionInterface::class);
         $path = ['service-1', 'service-5', 'service-4', 'service-3', 'service-2', 'service-1'];
         $message = 'Can not bind service-1 to service-5. Recursion detected: ' . implode(' -> ', $path);
         $this->expectExceptionMessage($message);
@@ -147,7 +148,7 @@ class ContainerTest extends TestCase
     public function testBindToSelf()
     {
         $container = new Container();
-        $this->expectException('Psr\Container\ContainerExceptionInterface');
+        $this->expectException(ContainerExceptionInterface::class);
         $this->expectExceptionMessage('Can not bind service to service. Recursion detected: service -> service');
         $container->bind('service', 'service');
     }

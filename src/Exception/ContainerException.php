@@ -8,7 +8,6 @@ use Exception;
 
 final class ContainerException extends InvalidArgumentException implements ContainerExceptionInterface
 {
-
     /**
      * @param string $id
      * @param Exception $previous
