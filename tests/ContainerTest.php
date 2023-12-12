@@ -10,7 +10,10 @@ use stdClass;
 
 class ContainerTest extends TestCase
 {
-    public function testHas()
+    /**
+     * @return void
+     */
+    public function testHas(): void
     {
         $container = new Container();
         $container->value('key', 'value');
@@ -18,21 +21,36 @@ class ContainerTest extends TestCase
         $this->assertFalse($container->has('other'));
     }
 
-    public function testNotFound()
+    /**
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testNotFound(): void
     {
         $container = new Container();
         $this->expectException(NotFoundExceptionInterface::class);
         $this->assertSame('value', $container->get('key'));
     }
 
-    public function testSet()
+    /**
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testSet(): void
     {
         $container = new Container();
         $container->value('key', 'value');
         $this->assertSame('value', $container->get('key'));
     }
 
-    public function testService()
+    /**
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testService(): void
     {
         $container = new Container();
         $container->service('key', function () {
@@ -42,15 +60,20 @@ class ContainerTest extends TestCase
         });
         $this->assertTrue($container->has('key'));
         $v1 = $container->get('key');
-        $this->assertInstanceOf('stdClass', $v1);
+        $this->assertInstanceOf(stdClass::class, $v1);
         $v2 = $container->get('key');
-        $this->assertInstanceOf('stdClass', $v2);
+        $this->assertInstanceOf(stdClass::class, $v2);
         $this->assertTrue($v1 === $v2);
         $v2->test = 'phpunit';
         $this->assertTrue($v1->test === $v2->test);
     }
 
-    public function testInstance()
+    /**
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testInstance(): void
     {
         $container = new Container();
         $container->instance('key', function () {
@@ -59,16 +82,23 @@ class ContainerTest extends TestCase
             return $test;
         });
         $this->assertTrue($container->has('key'));
+        /** @var object{test:string} $v1 */
         $v1 = $container->get('key');
-        $this->assertInstanceOf('stdClass', $v1);
+        $this->assertInstanceOf(stdClass::class, $v1);
+        /** @var object{test:string} $v2 */
         $v2 = $container->get('key');
-        $this->assertInstanceOf('stdClass', $v2);
+        $this->assertInstanceOf(stdClass::class, $v2);
         $this->assertFalse($v1 === $v2);
         $v2->test = 'phpunit';
         $this->assertFalse($v1->test === $v2->test);
     }
 
-    public function testDelegate()
+    /**
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testDelegate(): void
     {
         $container = new Container();
         $delegated = new Container();
@@ -80,7 +110,12 @@ class ContainerTest extends TestCase
         $this->assertSame('value', $container->get('key'));
     }
 
-    public function testBind()
+    /**
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testBind(): void
     {
         $container = new Container();
         $container->service('class', function () {
@@ -93,13 +128,18 @@ class ContainerTest extends TestCase
         $this->assertTrue($container->has('class'));
         $this->assertTrue($container->has('alias'));
 
+        /** @var object{test:string} $v1 */
         $v1 = $container->get('class');
         $v1->test = 'phpunit';
+        /** @var object{test:string} $v2 */
         $v2 = $container->get('alias');
         $this->assertSame($v1, $v2);
     }
 
-    public function testBindToNonExistentService()
+    /**
+     * @return void
+     */
+    public function testBindToNonExistentService(): void
     {
         $container = new Container();
         $container->bind('alias', 'class');
@@ -108,7 +148,12 @@ class ContainerTest extends TestCase
         $this->assertTrue($container->has('alias'));
     }
 
-    public function testBindChain()
+    /**
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testBindChain(): void
     {
         $container = new Container();
         $container->service('foo', function () {
@@ -123,15 +168,21 @@ class ContainerTest extends TestCase
         $this->assertTrue($container->has('bar'));
         $this->assertTrue($container->has('baz'));
 
+        /** @var object{test:string} $foo */
         $foo = $container->get('foo');
         $foo->test = 'phpunit';
+        /** @var object{test:string} $bar */
         $bar = $container->get('bar');
+        /** @var object{test:string} $baz */
         $baz = $container->get('baz');
         $this->assertSame($foo, $bar);
         $this->assertSame($foo, $baz);
     }
 
-    public function testBindRecursive()
+    /**
+     * @return void
+     */
+    public function testBindRecursive(): void
     {
         $container = new Container();
         $this->expectException(ContainerExceptionInterface::class);
@@ -145,7 +196,10 @@ class ContainerTest extends TestCase
         $container->bind('service-1', 'service-5');
     }
 
-    public function testBindToSelf()
+    /**
+     * @return void
+     */
+    public function testBindToSelf(): void
     {
         $container = new Container();
         $this->expectException(ContainerExceptionInterface::class);
